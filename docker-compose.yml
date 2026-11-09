@@ -56,12 +56,21 @@ services:
 
   # Builds the Vite assets once (public/build) and exits.
   assets:
-    image: node:20-alpine
+    image: node:24-alpine
     working_dir: /var/www/html
+    environment:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: 0
+      CI: "true" # non-interactive: pnpm never waits on a prompt
     volumes:
       - ./ctt:/var/www/html
-    # npm ci installs exactly what package-lock.json says and never rewrites it.
-    command: sh -c "npm ci --no-audit --no-fund && npm run build"
+      # Linux node_modules kept apart from the Mac's ctt/node_modules:
+      # esbuild ships different native binaries per OS.
+      - node-modules:/var/www/html/node_modules
+    # Corepack installs the pnpm version pinned in package.json ("packageManager").
+    # --frozen-lockfile installs exactly what pnpm-lock.yaml says and never rewrites it.
+    # The pnpm store lives in the node-modules volume so it's cached and stays out of ctt/.
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile --store-dir /var/www/html/node_modules/.pnpm-store && pnpm run build"
 
 volumes:
   mysql-data:
+  node-modules:
