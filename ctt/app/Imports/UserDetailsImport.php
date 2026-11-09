@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\AfterImport;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Models\Student;
 
@@ -16,7 +17,7 @@ class UserDetailsImport implements ToModel, WithHeadingRow, WithEvents
     protected $socRankings = [];
     protected $siddRankings = [];
 
-    public function model(array $row)
+    public function model(array $row): ?Model
     {
         $subjects = ['sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'];
         $marks = [

@@ -6,16 +6,16 @@
 #   docker compose logs -f app
 #   docker compose down                          # add -v to wipe the database
 #
-# PHP version: 8.2 runs Laravel 10–12 with the current composer.lock.
-# Laravel 13 needs 8.3+: run with PHP_VERSION=8.3 docker compose up -d --build
+# PHP version: defaults to 8.5 (Laravel 13 supports 8.3–8.5).
+# To try another: PHP_VERSION=8.4 docker compose up -d --build
 
 services:
   app:
     build:
       context: ./docker/php
       args:
-        PHP_VERSION: ${PHP_VERSION:-8.2}
-    image: ctt-app:php${PHP_VERSION:-8.2}
+        PHP_VERSION: ${PHP_VERSION:-8.5}
+    image: ctt-app:php${PHP_VERSION:-8.5}
     working_dir: /var/www/html
     volumes:
       - ./ctt:/var/www/html
