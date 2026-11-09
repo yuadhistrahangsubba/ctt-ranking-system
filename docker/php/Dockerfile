@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.5
 FROM php:${PHP_VERSION}-cli
 
 # System libraries for the PHP extensions below (gd + zip are needed by
